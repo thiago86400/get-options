@@ -14,24 +14,22 @@ describe("usability", () => {
   afterEach(PlatformTest.reset);
 
   it("should return options for admin role", async () => {
-      const token = jwt.sign({ firstName: "Alice", role: "admin" }, "admin-secret", {
+      const token = jwt.sign({ firstName: "Alice", role: "admin" }, "some-secret", {
           algorithm: "HS256",
       });
       const response = await request
          .get("/options")
-         .query({secret: 'secret'})
          .set('authorization', `bearer ${token}`).expect(200);
 
       expect(response.text).toContain("Admin options");
   });
 
   it("should return options for user role", async () => {
-      const token = jwt.sign({ firstName: "James", role: "user" }, "user-secret", {
+      const token = jwt.sign({ firstName: "James", role: "user" }, "some-secret", {
           algorithm: "HS256",
       });
       const response = await request
           .get("/options")
-          .query({secret: 'secret'})
           .set('authorization', `bearer ${token}`).expect(200);
 
       expect(response.text).toContain("User options");

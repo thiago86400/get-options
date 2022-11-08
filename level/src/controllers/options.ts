@@ -2,18 +2,18 @@ import { Controller, Get, HeaderParams, QueryParams } from "@tsed/common";
 import {JwtPayload} from "jsonwebtoken";
 import {BadRequest} from "@tsed/exceptions";
 const jwt = require("jsonwebtoken");
-
+const secret = 'some-secret';
 
 @Controller("/options")
 export class Options {
   @Get("/")
-  get(@QueryParams('secret') secret: string, @HeaderParams('authorization') auth: string) {
+  get(@HeaderParams('authorization') auth: string) {
       const token = auth.replace('bearer ', '');
-      return getOptions(token, secret);
+      return getOptions(token);
   }
 }
 
-const getOptions = (token: string, secret: string) => {
+const getOptions = (token: string) => {
     if (decodeJWT(token).role === 'admin') {
         return 'Admin options'
     } else {

@@ -22,9 +22,6 @@ describe("security", () => {
         const token = jwt.sign({ firstName: "Hacker", role: "admin" }, "hacker-build-secret", {
             algorithm: "HS256",
         });
-        const response = await request
-            .get("/options")
-            .query({secret: 'secret'})
-            .set('authorization', `bearer ${token}`).expect(400);
+        await request.get("/options").set('authorization', `bearer ${token}`).expect(500);
     });
 });
