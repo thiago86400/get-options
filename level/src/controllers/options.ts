@@ -2,7 +2,7 @@ import { Controller, Get, HeaderParams } from "@tsed/common";
 import {JwtPayload} from "jsonwebtoken";
 import {BadRequest} from "@tsed/exceptions";
 const jwt = require("jsonwebtoken");
-const secret = 'some-secret';
+const secret = process.env.SECRET
 
 @Controller("/options")
 export class Options {
@@ -18,7 +18,7 @@ const getOptions = (token: string) => {
     if (decodeJWT(token).role === 'admin') {
         return 'Admin options'
     } else {
-       return 'User options'
+        return 'User options'
     }
 }
 
