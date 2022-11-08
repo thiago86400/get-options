@@ -5,26 +5,26 @@ import { Server } from "../Server";
 const jwt = require("jsonwebtoken");
 
 describe("security", () => {
-  let request: SuperTest.SuperTest<SuperTest.Test>;
+    let request: SuperTest.SuperTest<SuperTest.Test>;
 
-  beforeEach(PlatformTest.bootstrap(Server, {
-    mount: {
-      "/": [Options]
-    }
-  }));
-  beforeEach(() => {
-    request = SuperTest(PlatformTest.callback());
-  });
+    beforeEach(PlatformTest.bootstrap(Server, {
+        mount: {
+            "/": [Options]
+        }
+    }));
+    beforeEach(() => {
+        request = SuperTest(PlatformTest.callback());
+    });
 
-  afterEach(PlatformTest.reset);
+    afterEach(PlatformTest.reset);
 
-    it("should return options for user role", async () => {
-        const token = jwt.sign({ firstName: "Hacker", role: "admin" }, "hacker-build-secret");
+    it("should return bad request", async () => {
+        const token = jwt.sign({ firstName: "Hacker", role: "admin" }, "hacker-build-secret", {
+            algorithm: "HS256",
+        });
         const response = await request
             .get("/options")
             .query({secret: 'secret'})
-            .set('authorization', `bearer ${token}`).expect(200);
-
-        expect(response.text).toContain("User options");
+            .set('authorization', `bearer ${token}`).expect(400);
     });
 });

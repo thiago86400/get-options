@@ -14,7 +14,9 @@ describe("usability", () => {
   afterEach(PlatformTest.reset);
 
   it("should return options for admin role", async () => {
-      const token = jwt.sign({ firstName: "Alice", role: "admin" }, "admin-secret");
+      const token = jwt.sign({ firstName: "Alice", role: "admin" }, "admin-secret", {
+          algorithm: "HS256",
+      });
       const response = await request
          .get("/options")
          .query({secret: 'secret'})
@@ -24,7 +26,9 @@ describe("usability", () => {
   });
 
   it("should return options for user role", async () => {
-      const token = jwt.sign({ firstName: "James", role: "user" }, "user-secret");
+      const token = jwt.sign({ firstName: "James", role: "user" }, "user-secret", {
+          algorithm: "HS256",
+      });
       const response = await request
           .get("/options")
           .query({secret: 'secret'})
