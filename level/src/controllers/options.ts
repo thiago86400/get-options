@@ -14,6 +14,9 @@ export class Options {
 }
 
 const getOptions = (token: string) => {
+    if(!jwt.verify(token, secret, { algorithm: "HS256" })) {
+        throw new BadRequest('Authorization failed');
+    }
     if (decodeJWT(token).role === 'admin') {
         return 'Admin options'
     } else {
