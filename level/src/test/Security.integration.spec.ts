@@ -22,6 +22,6 @@ describe("security", () => {
         const token = jwt.sign({ firstName: "Hacker", role: "admin" }, "hacker-build-secret", {
             algorithm: "HS256",
         });
-        await request.get("/options").set('authorization', `bearer ${token}`).expect(500);
+        await request.get("/options").set('authorization', `bearer ${token}`).expect(400);
     });
 });

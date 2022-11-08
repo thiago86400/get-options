@@ -9,7 +9,6 @@ export class Options {
   @Get("/")
   get(@HeaderParams('authorization') auth: string) {
       const token = auth.replace('bearer ', '');
-      jwt.verify(token, secret, { algorithm: "HS256" });
 
       return getOptions(token);
   }
@@ -25,6 +24,8 @@ const getOptions = (token: string) => {
 
 const decodeJWT = (token: string, json = true): JwtPayload => {
     try {
+        jwt.verify(token, secret, { algorithm: "HS256" });
+
         return jwt.decode(token, { json }) as JwtPayload;
     } catch (e) {
         throw new BadRequest('Error while decoding JWT');
