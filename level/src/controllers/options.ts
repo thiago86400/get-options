@@ -1,4 +1,4 @@
-import { Controller, Get, HeaderParams, QueryParams } from "@tsed/common";
+import { Controller, Get, HeaderParams } from "@tsed/common";
 import {JwtPayload} from "jsonwebtoken";
 import {BadRequest} from "@tsed/exceptions";
 const jwt = require("jsonwebtoken");
@@ -9,14 +9,13 @@ export class Options {
   @Get("/")
   get(@HeaderParams('authorization') auth: string) {
       const token = auth.replace('bearer ', '');
+      jwt.verify(token, secret, { algorithm: "HS256" });
+
       return getOptions(token);
   }
 }
 
 const getOptions = (token: string) => {
-    if(!jwt.verify(token, secret, { algorithm: "HS256" })) {
-        throw new BadRequest('Authorization failed');
-    }
     if (decodeJWT(token).role === 'admin') {
         return 'Admin options'
     } else {
